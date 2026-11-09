@@ -1,7 +1,6 @@
-
 import express from "express";
 import cors from "cors";
-
+import authRouter from "../src/routes/auth.routes"
 const app = express();
 
 app.use(cors());
@@ -20,5 +19,7 @@ app.get("/api/health", (_req, res) => {
     service: "IoT Control Backend"
   });
 });
+
+app.use("/api/auth", authRouter)
 
 export default app;
