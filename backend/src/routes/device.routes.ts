@@ -1,9 +1,9 @@
 
 import { Router } from "express";
 
-import { createDevice, getDevices, getDeviceById, deleteDevice} from "../controllers/device.controller";
+import { createDevice, getDevices, getDeviceById, deleteDevice} from "../controllers/device.controller.js";
 
-import { authMiddleware } from "../middlewares/auth.middleware";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 

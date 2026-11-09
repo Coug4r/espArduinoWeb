@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { createHash } from "node:crypto";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
 export const deviceMiddleWare = async (req: Request, res: Response, next: NextFunction) => {
     try {

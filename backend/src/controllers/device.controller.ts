@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { randomBytes, createHash } from "node:crypto";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
 //registrar dispositivo
 

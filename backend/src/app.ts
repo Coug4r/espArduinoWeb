@@ -2,10 +2,10 @@
 import express from "express";
 import cors from "cors";
 
-import authRoutes from "./routes/auth.routes";
-import deviceRoutes from "./routes/device.routes";
-import iotRoutes from "./routes/iot.routes";
-import commandRoutes from "./routes/command.routes";
+import authRoutes from "./routes/auth.routes.js";
+import deviceRoutes from "./routes/device.routes.js";
+import iotRoutes from "./routes/iot.routes.js";
+import commandRoutes from "./routes/command.routes.js";
 
 const app = express();
 

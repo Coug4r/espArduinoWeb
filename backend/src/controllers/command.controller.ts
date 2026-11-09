@@ -1,7 +1,7 @@
 
 import { Request, Response } from "express";
-import prisma from "../config/prisma";
-import { getNextCommand } from "../services/command.service";
+import prisma from "../config/prisma.js";
+import { getNextCommand } from "../services/command.service.js";
 
 // CREAR COMANDO DESDE EL FRONTEND
 export const createCommand = async (
