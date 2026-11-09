@@ -1,8 +1,5 @@
 import { Redis } from '@upstash/redis';
 
-// Respaldo en memoria por si las variables de entorno aún no cargan
-let memoriaLed = "OFF";
-
 // Auto-detectar las variables de Upstash sin importar qué prefijo les puso Vercel
 const envKeys = Object.keys(process.env);
 const urlKey = envKeys.find(k => k.endsWith('REST_API_URL') || k.endsWith('REDIS_REST_URL'));
@@ -16,6 +13,11 @@ const redis = (redisUrl && redisUrl.startsWith('http') && redisToken)
   ? new Redis({ url: redisUrl, token: redisToken })
   : null;
 
+let dispositivos = {
+  led: "OFF",
+  motor: "0"
+}
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
@@ -23,9 +25,10 @@ export default async function handler(req, res) {
     // 1. Petición GET (ESP8266 / Navegador)
     if (req.method === 'GET') {
       if (redis) {
-        const estadoLed = await redis.get('estado_led') ?? "OFF";
-        return res.status(200).json({ led: estadoLed });
+        const guardado = await redis.get('dispositivos');
+        if(guardado) dispositivos = guardado;
       }
+      return res.status(200).json(dispositivos);
       // Si Redis no tiene variables aún, responde desde memoria sin fallar
       return res.status(200).json({ led: memoriaLed });
     }
@@ -33,19 +36,22 @@ export default async function handler(req, res) {
     // 2. Petición POST (Postman)
     if (req.method === 'POST') {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-      const { led } = body;
+      if(redis){
+        const guardado = await redis.get('dispositivos');
+        if(guardado) dispositivos = guardados
 
-      if (led !== undefined) {
-        memoriaLed = String(led);
-        if (redis) {
-          await redis.set('estado_led', memoriaLed);
-        }
-        return res.status(200).json({ 
-          mensaje: redis ? "Guardado en Upstash Redis" : "Guardado en memoria (Faltan env vars de Redis)", 
-          led: memoriaLed 
-        });
+        if(body.led !== undefined) dispositivos.led = body.led
+        if(body.motor !== undefined) dispositivos.motor = body.motor 
       }
-      return res.status(400).json({ error: "Falta el campo 'led'" });
+
+      if(redis){
+        await redis.set('dispositivos', dispositivos);
+      }
+
+      return res.status(200).json({
+        mensage: "Datos actualizados",
+        datos: dispositivos
+      })
     }
 
     return res.status(405).json({ error: "Método no permitido" });
