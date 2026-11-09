@@ -1,0 +1,70 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CommandStatus {
+  PENDING
+  DELIVERED
+  EXECUTED
+  FAILED
+  EXPIRED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  devices Device[]
+}
+
+model Device {
+  id              String   @id @default(cuid())
+  name            String
+  deviceTokenHash String   @unique
+  isOnline        Boolean  @default(false)
+  lastSeen        DateTime?
+  createdAt       DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  commands Command[]
+  logs     DeviceLog[]
+}
+
+model Command {
+  id         String        @id @default(cuid())
+  payload    Json
+  status     CommandStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  deliveredAt DateTime?
+  executedAt DateTime?
+  expiresAt  DateTime
+
+  deviceId String
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@index([deviceId, status, createdAt])
+}
+
+model DeviceLog {
+  id        String   @id @default(cuid())
+  event     String
+  details   Json?
+  createdAt DateTime @default(now())
+
+  deviceId String
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@index([deviceId, createdAt])
+}
