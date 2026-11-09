@@ -42,19 +42,26 @@ model Device {
   logs     DeviceLog[]
 }
 
+
+
 model Command {
-  id         String        @id @default(cuid())
-  payload    Json
-  status     CommandStatus @default(PENDING)
-  createdAt  DateTime      @default(now())
-  deliveredAt DateTime?
-  executedAt DateTime?
-  expiresAt  DateTime
+  id               String        @id @default(cuid())
+  payload          Json
+  status           CommandStatus @default(PENDING)
+
+  createdAt        DateTime      @default(now())
+  deliveredAt      DateTime?
+  executedAt       DateTime?
+  expiresAt        DateTime
+
+  leaseUntil       DateTime?
+  deliveryAttempts Int           @default(0)
 
   deviceId String
   device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 
   @@index([deviceId, status, createdAt])
+  @@index([deviceId, status, leaseUntil])
 }
 
 model DeviceLog {
