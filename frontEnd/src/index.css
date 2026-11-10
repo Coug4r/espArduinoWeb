@@ -8,52 +8,53 @@
   }
 
   body {
-    background-color: #211713;
-    color: #F2E6D5;
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #060A08;
+    color: #E8FFF0;
+    font-family: 'JetBrains Mono', 'Outfit', -apple-system, BlinkMacSystemFont, monospace, sans-serif;
     overflow-x: hidden;
   }
 }
 
-/* Custom Coffee Glassmorphism & Glow Utilities */
+/* Hacker Cyber Glassmorphism & Neon Glow */
 .glass-panel {
-  background: rgba(56, 37, 30, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(101, 67, 50, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(15, 10, 8, 0.37);
+  background: rgba(13, 25, 18, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(21, 51, 34, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
 }
 
 .glass-card {
-  background: rgba(56, 37, 30, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(101, 67, 50, 0.4);
+  background: rgba(13, 25, 18, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(21, 51, 34, 0.65);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  background: rgba(56, 37, 30, 0.85);
-  border-color: rgba(184, 121, 69, 0.6);
-  box-shadow: 0 0 20px -3px rgba(184, 121, 69, 0.35);
+  background: rgba(13, 25, 18, 0.92);
+  border-color: rgba(0, 255, 102, 0.65);
+  box-shadow: 0 0 24px -2px rgba(0, 255, 102, 0.35);
 }
 
-/* Custom Scrollbar */
+/* Hacker Terminal Cyber Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #17100d;
+  background: #030504;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #654332;
-  border-radius: 4px;
+  background: #153322;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 255, 102, 0.2);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B87945;
+  background: #00FF66;
+  box-shadow: 0 0 10px #00FF66;
 }
-

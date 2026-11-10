@@ -4,7 +4,8 @@ export type LedCommandValue = "LED_ON" | "LED_OFF";
 
 export interface CommandPayload {
   commands: {
-    led: LedCommandValue;
+    command?: string;
+    led?: string;
     [key: string]: string | undefined;
   };
 }
@@ -22,12 +23,16 @@ export interface Command {
 
 export interface CreateCommandDto {
   commands: {
-    led: LedCommandValue;
+    command: string;
   };
 }
 
 export interface CreateCommandResponse {
   message: string;
   command: Command;
+  expected?: {
+    commands: {
+      command: string;
+    };
+  };
 }
-

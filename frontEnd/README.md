@@ -103,9 +103,10 @@ Toda la comunicación pasa a través de la URL base configurada en `VITE_API_URL
 - `DELETE /api/devices/:id` — Eliminación segura del dispositivo y sus comandos asociados.
 
 ### Comandos de Control (`/api/devices/:id/commands`)
-- `POST /api/devices/:id/commands` — Emisión de comandos para conmutación digital.
-  - Encender LED: `{"commands":{"led":"LED_ON"}}`
-  - Apagar LED: `{"commands":{"led":"LED_OFF"}}`
+- `POST /api/devices/:id/commands` — Emisión de comandos para conmutación digital y acciones personalizadas:
+  - Encender LED: `{"commands":{"command":"LED_ON"}}`
+  - Apagar LED: `{"commands":{"command":"LED_OFF"}}`
+  - Comando personalizado (1-200 caracteres): `{"commands":{"command":"TU_COMANDO"}}`
   - El backend almacena el comando con expiración (TTL de 5 minutos) en la tabla `Command`.
   - El ESP8266 consulta periódicamente `GET /api/iot/commands/next` y confirma con `POST /api/iot/commands/:id/ack`.
 

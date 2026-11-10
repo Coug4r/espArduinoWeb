@@ -151,7 +151,7 @@ export const CommandHistory: React.FC = () => {
                       </td>
                       <td className="py-3 px-3">
                         <span className="px-2 py-0.5 rounded bg-espresso text-cafe-latte border border-cafe-roast font-bold">
-                          {cmd.payload?.commands?.led || JSON.stringify(cmd.payload)}
+                          {cmd.payload?.commands?.command || cmd.payload?.commands?.led || JSON.stringify(cmd.payload)}
                         </span>
                       </td>
                       <td className="py-3 px-3 text-cafe-muted">
@@ -267,7 +267,7 @@ export const CommandHistory: React.FC = () => {
             <p className="text-cafe-latte font-bold">// backend/prisma/schema.prisma</p>
             <p className="text-cafe-muted">model Command &#123;</p>
             <p className="pl-4">id               String        @id @default(cuid())</p>
-            <p className="pl-4">payload          Json          // &#123; "commands": &#123; "led": "LED_ON" | "LED_OFF" &#125; &#125;</p>
+            <p className="pl-4">payload          Json          // &#123; "commands": &#123; "command": "TU_COMANDO" &#125; &#125;</p>
             <p className="pl-4">status           CommandStatus @default(PENDING)</p>
             <p className="pl-4">createdAt        DateTime      @default(now())</p>
             <p className="pl-4">deliveredAt      DateTime?</p>

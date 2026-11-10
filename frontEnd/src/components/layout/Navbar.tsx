@@ -31,11 +31,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-base tracking-tight text-cafe-cream">
-                IoT<span className="text-cafe-caramel">Control</span>
+              <span className="font-bold text-base tracking-tight text-cafe-cream font-mono">
+                IoT_<span className="text-cafe-caramel">CONTROL</span>
               </span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-cafe-roast/40 text-cafe-latte border border-cafe-roast font-mono uppercase tracking-wider">
-                ESP8266
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-cafe-roast/60 text-cafe-latte border border-cafe-roast font-mono uppercase tracking-wider font-bold">
+                ESP8266_NODE
               </span>
             </div>
           </div>

@@ -6,23 +6,34 @@ import type {
 
 export const commandsService = {
   /**
-   * Envía un comando de LED al dispositivo a través del backend
+   * Envía cualquier comando en formato texto al dispositivo a través del backend
    * Endpoint: POST /api/devices/:id/commands
-   * Body: { commands: { led: "LED_ON" | "LED_OFF" } }
+   * Body: { commands: { command: "TU_COMANDO" } }
    */
-  async sendLedCommand(
+  async sendCommand(
     deviceId: string,
-    ledState: LedCommandValue
+    commandText: string
   ): Promise<CreateCommandResponse> {
+    const cleanCommand = commandText.trim();
     const response = await api.post<CreateCommandResponse>(
       `/api/devices/${deviceId}/commands`,
       {
         commands: {
-          led: ledState,
+          command: cleanCommand,
         },
       }
     );
     return response.data;
   },
-};
 
+  /**
+   * Envía un comando de LED al dispositivo respetando el nuevo contrato del backend
+   * Body: { commands: { command: "LED_ON" | "LED_OFF" } }
+   */
+  async sendLedCommand(
+    deviceId: string,
+    ledState: LedCommandValue
+  ): Promise<CreateCommandResponse> {
+    return this.sendCommand(deviceId, ledState);
+  },
+};
