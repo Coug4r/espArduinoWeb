@@ -1,4 +1,3 @@
-
 import { Request, Response } from "express";
 import prisma from "../config/prisma.js";
 import { getNextCommand } from "../services/command.service.js";
@@ -36,29 +35,45 @@ export const createCommand = async (
       });
     }
 
-    // Validar comandos permitidos inicialmente
+    // Validar estructura del comando
     if (
       !commands ||
       typeof commands !== "object" ||
       Array.isArray(commands) ||
       Object.keys(commands).length !== 1 ||
-      commands.led === undefined ||
-      !["LED_ON", "LED_OFF"].includes(commands.led)
+      typeof commands.command !== "string"
     ) {
       return res.status(400).json({
-        message: "Comando no válido",
-        allowed: {
-          led: ["LED_ON", "LED_OFF"]
+        message: "Formato de comando inválido",
+        expected: {
+          commands: {
+            command: "TU_COMANDO"
+          }
         }
       });
     }
 
+    // Validar contenido del comando
+    const commandText = commands.command.trim();
+
+    if (
+      commandText.length === 0 ||
+      commandText.length > 200 ||
+      /[\r\n]/.test(commandText)
+    ) {
+      return res.status(400).json({
+        message:
+          "El comando debe tener entre 1 y 200 caracteres y no contener saltos de línea"
+      });
+    }
+
+    // Registrar comando
     const command = await prisma.command.create({
       data: {
         deviceId: device.id,
         payload: {
           commands: {
-            led: commands.led
+            command: commandText
           }
         },
         expiresAt: new Date(Date.now() + 5 * 60 * 1000)
@@ -163,7 +178,8 @@ export const ackCommand = async (
       });
     }
 
-    if (!["EXECUTED", "FAILED"].includes(status)) {
+    // Validar estado y permitir que TypeScript infiera el enum
+    if (status !== "EXECUTED" && status !== "FAILED") {
       return res.status(400).json({
         message: "Estado de confirmación inválido"
       });
@@ -235,7 +251,10 @@ export const ackCommand = async (
       where: {
         id,
         deviceId,
-        status: "DELIVERED"
+        status: "DELIVERED",
+        expiresAt: {
+          gt: new Date()
+        }
       },
       data: {
         status,
